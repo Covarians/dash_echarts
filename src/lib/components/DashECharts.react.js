@@ -305,12 +305,15 @@ const DashEcharts = (props) => {
                     const minY = yAxisExtent[0];
                     const maxY = yAxisExtent[1];
 
+                    // Get the yAxis name.
+                    const yAxisName = yAxes[yAxisIndex].name;
+
                     // Get the corresponding series name.
                     const seriesName = myChart.getModel().option.series.find(s => s.yAxisIndex === yAxisIndex)?.name;
 
                     // Return props. Added timestamp (unique) so that Dash will detect the event even if other values didn't change.
                     setProps({
-                        yAxisRightClick: {index: yAxisIndex, name: seriesName, min: minY, max: maxY, ts: Date.now()}
+                        yAxisRightClick: {index: yAxisIndex, name: seriesName, min: minY, max: maxY, axisName: yAxisName, ts: Date.now()}
                     });
                 }
             }
