@@ -328,7 +328,7 @@ const DashEcharts = (props) => {
                 const dataIndex = payload.dataIndex;
                 if (dataIndex) {
                     setProps({
-                        yAxisRightClick: {index: yAxisIndex, name: seriesName, min: minY, max: maxY, axisName: yAxisName, ts: Date.now()}
+                        axisPointer_index: dataIndex
                     });
                 }
             });
