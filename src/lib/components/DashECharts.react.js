@@ -33,7 +33,9 @@ const DashEcharts = (props) => {
         brush_data,
         brushSelected_data,
         event,
-        option, opt_merge, part_of_opt, enable_get_clicked_bar_data_event, clicked_bar_data,
+        option, opt_merge, part_of_opt, 
+        enable_get_clicked_bar_data_event, clicked_bar_data,
+        enable_get_axisPointer_event, //axisPointer_updated,
         style, id, setProps,
         maps,
         funs, fun_keys, fun_values, fun_paths, fun_effects, fun_prepares,
@@ -319,6 +321,14 @@ const DashEcharts = (props) => {
             }
         });
 
+
+        if (enable_get_axisPointer_event) {
+            myChart.on('updateAxisPointer', (payload) => {
+                console.log(payload);
+            });
+        }
+
+
         myChart.on("datazoom", e => {
             const ts = Date.now()
             const d = e.batch ? e.batch[0] : e;
@@ -545,6 +555,7 @@ DashEcharts.defaultProps = {
     part_of_opt: {},
     enable_get_clicked_bar_data_event: false,
     clicked_bar_data: {},
+    enable_get_axisPointer_event: false,
     maps: {},
     fun_keys: [],
     fun_values: [],
@@ -575,6 +586,7 @@ DashEcharts.propTypes = {
     part_of_opt: PropTypes.object,
     enable_get_clicked_bar_data_event: PropTypes.bool,
     clicked_bar_data: PropTypes.object,
+    enable_get_axisPointer_event: PropTypes.bool,
     maps: PropTypes.object,
     funs: PropTypes.object,
     fun_keys: PropTypes.array,
