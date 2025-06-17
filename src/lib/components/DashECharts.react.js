@@ -327,6 +327,7 @@ const DashEcharts = (props) => {
                 // Event triggers also when mouse leaves render area. When that happens, dataIndex is not in the payload, so we filter using that.
                 const dataIndex = payload.dataIndex;
                 if (dataIndex) {
+                    const model = myChart.getModel();
                     const xAxes = model.get("xAxis");
                     if (xAxes && xAxes.length > 0) {
                         console.log(payload);
