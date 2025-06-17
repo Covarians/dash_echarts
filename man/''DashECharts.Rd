@@ -10,9 +10,9 @@ ExampleComponent is an example component. It takes a property, `label`, and di
 }
 
 \usage{
-''DashECharts(id=NULL, bmap_token=NULL, brushSelected_data=NULL,
-brush_data=NULL, click_data=NULL, clicked_bar_data=NULL,
-enable_get_axisPointer_event=NULL,
+''DashECharts(id=NULL, axisPointer_index=NULL, bmap_token=NULL,
+brushSelected_data=NULL, brush_data=NULL, click_data=NULL,
+clicked_bar_data=NULL, enable_get_axisPointer_event=NULL,
 enable_get_clicked_bar_data_event=NULL, event=NULL,
 fun_effects=NULL, fun_keys=NULL, fun_paths=NULL,
 fun_prepares=NULL, fun_values=NULL, funs=NULL,
@@ -25,6 +25,8 @@ yAxisRightClick=NULL, zoom_data=NULL)
 
 \arguments{
 \item{id}{Character. The ID used to identify this component in Dash callbacks.}
+
+\item{axisPointer_index}{Numeric. }
 
 \item{bmap_token}{Character. }
 

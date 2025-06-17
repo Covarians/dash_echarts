@@ -23,6 +23,8 @@ Keyword arguments:
 - id (string; optional):
     The ID used to identify this component in Dash callbacks.
 
+- axisPointer_index (number; optional)
+
 - bmap_token (string; optional)
 
 - brushSelected_data (dict; optional)
@@ -103,6 +105,7 @@ Keyword arguments:
         enable_get_clicked_bar_data_event: typing.Optional[bool] = None,
         clicked_bar_data: typing.Optional[dict] = None,
         enable_get_axisPointer_event: typing.Optional[bool] = None,
+        axisPointer_index: typing.Optional[typing.Union[int, float, numbers.Number]] = None,
         maps: typing.Optional[dict] = None,
         funs: typing.Optional[dict] = None,
         fun_keys: typing.Optional[typing.Sequence] = None,
@@ -117,9 +120,9 @@ Keyword arguments:
         yAxisResize: typing.Optional[dict] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_axisPointer_event', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
+        self._prop_names = ['id', 'axisPointer_index', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_axisPointer_event', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_axisPointer_event', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
+        self.available_properties = ['id', 'axisPointer_index', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_axisPointer_event', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

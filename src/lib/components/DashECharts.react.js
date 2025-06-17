@@ -35,7 +35,7 @@ const DashEcharts = (props) => {
         event,
         option, opt_merge, part_of_opt, 
         enable_get_clicked_bar_data_event, clicked_bar_data,
-        enable_get_axisPointer_event, //axisPointer_updated,
+        enable_get_axisPointer_event, axisPointer_index,
         style, id, setProps,
         maps,
         funs, fun_keys, fun_values, fun_paths, fun_effects, fun_prepares,
@@ -327,7 +327,9 @@ const DashEcharts = (props) => {
                 // Event triggers also when mouse leaves render area. When that happens, dataIndex is not in the payload, so we filter using that.
                 const dataIndex = payload.dataIndex;
                 if (dataIndex) {
-                    console.log(dataIndex);
+                    setProps({
+                        yAxisRightClick: {index: yAxisIndex, name: seriesName, min: minY, max: maxY, axisName: yAxisName, ts: Date.now()}
+                    });
                 }
             });
         }
@@ -560,6 +562,7 @@ DashEcharts.defaultProps = {
     enable_get_clicked_bar_data_event: false,
     clicked_bar_data: {},
     enable_get_axisPointer_event: false,
+    axisPointer_index: null,
     maps: {},
     fun_keys: [],
     fun_values: [],
@@ -591,6 +594,7 @@ DashEcharts.propTypes = {
     enable_get_clicked_bar_data_event: PropTypes.bool,
     clicked_bar_data: PropTypes.object,
     enable_get_axisPointer_event: PropTypes.bool,
+    axisPointer_index: PropTypes.number,
     maps: PropTypes.object,
     funs: PropTypes.object,
     fun_keys: PropTypes.array,
