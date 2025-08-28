@@ -26,6 +26,7 @@ Keyword arguments:
 - `fun_prepares` (Array; optional)
 - `fun_values` (Array; optional)
 - `funs` (Dict; optional)
+- `getDataURL` (Dict; optional)
 - `mapbox_token` (String; optional)
 - `maps` (Dict; optional)
 - `n_clicks` (Real; optional)
@@ -33,6 +34,8 @@ Keyword arguments:
 - `opt_merge` (Dict; optional)
 - `option` (Dict; optional)
 - `part_of_opt` (Dict; optional)
+- `renderToSVGString` (Dict; optional)
+- `renderer` (String; optional)
 - `reset_id` (Real; optional)
 - `resize_id` (Real; optional)
 - `selected_data` (Dict; optional)
@@ -42,7 +45,7 @@ Keyword arguments:
 - `zoom_data` (Dict; optional)
 """
 function ''_dashecharts(; kwargs...)
-        available_props = Symbol[:id, :bmap_token, :brushSelected_data, :brush_data, :click_data, :clicked_bar_data, :enable_get_clicked_bar_data_event, :event, :fun_effects, :fun_keys, :fun_paths, :fun_prepares, :fun_values, :funs, :mapbox_token, :maps, :n_clicks, :n_clicks_timestamp, :opt_merge, :option, :part_of_opt, :reset_id, :resize_id, :selected_data, :style, :yAxisResize, :yAxisRightClick, :zoom_data]
+        available_props = Symbol[:id, :bmap_token, :brushSelected_data, :brush_data, :click_data, :clicked_bar_data, :enable_get_clicked_bar_data_event, :event, :fun_effects, :fun_keys, :fun_paths, :fun_prepares, :fun_values, :funs, :getDataURL, :mapbox_token, :maps, :n_clicks, :n_clicks_timestamp, :opt_merge, :option, :part_of_opt, :renderToSVGString, :renderer, :reset_id, :resize_id, :selected_data, :style, :yAxisResize, :yAxisRightClick, :zoom_data]
         wild_props = Symbol[]
         return Component("''_dashecharts", "DashECharts", "dash_echarts", available_props, wild_props; kwargs...)
 end

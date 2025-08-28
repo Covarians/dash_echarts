@@ -40,8 +40,11 @@ const DashEcharts = (props) => {
         mapbox_token, bmap_token,
         resize_id,
         reset_id,
-        yAxisRightClick,// yAxis has been right clicked, send this axis index and min/max values to Dash
-        yAxisResize,    // yAxis resize, values sent from Dash
+        yAxisRightClick,// yAxis has been right clicked, send this axis index and min/max values to Dash.
+        yAxisResize,    // yAxis resize, values sent from Dash.
+        renderer,       // "canvas" or "svg".
+        getDataURL,     // Exports chart image; returns a base64 URL; can be set to src of Image. See echarts documentation for this function (same name).
+        renderToSVGString // Render to a SVG string. Available when setting renderer: 'svg' to use SVG rendering mode. See echarts documentation for this function (same name).
     } = props;
 
 
@@ -147,7 +150,7 @@ const DashEcharts = (props) => {
 
     useEffect(() => {
 
-        const myChart = echarts.init(chartRef.current)
+        const myChart = echarts.init(chartRef.current, null, {renderer: renderer})
         myChart.setOption(option, true, false)
         setChart(myChart)
 
@@ -514,6 +517,26 @@ const DashEcharts = (props) => {
         }
     }, [yAxisResize])
 
+    useEffect(() => {
+        if (!ramda.isEmpty(chart)) {
+            const data_url = chart.getDataURL(getDataURL)
+            
+            setProps({
+                getDataURL: data_url
+            })
+        }
+    }, [getDataURL])
+
+    useEffect(() => {
+        if (!ramda.isEmpty(chart)) {
+            const svg_string = chart.renderToSVGString(renderToSVGString)
+
+            setProps({
+                renderToSVGString: svg_string
+            })
+        }
+    }, [renderToSVGString])
+
 
     useEffect(() => {
         if (!ramda.isEmpty(chart)) {
@@ -556,6 +579,9 @@ DashEcharts.defaultProps = {
     bmap_token: null,
     yAxisRightClick: {},
     yAxisResize: {},
+    renderer: "canvas",
+    getDataURL: null,
+    renderToSVGString: null,
 };
 
 DashEcharts.propTypes = {
@@ -603,6 +629,10 @@ DashEcharts.propTypes = {
      * Receive yAxisIndex, min and max to resize yAxis
      */
     yAxisResize: PropTypes.object,
+
+    renderer: PropTypes.string,
+    getDataURL: PropTypes.object,
+    renderToSVGString: PropTypes.object,
 };
 
 export default DashEcharts;

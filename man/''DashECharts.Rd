@@ -15,9 +15,10 @@ brush_data=NULL, click_data=NULL, clicked_bar_data=NULL,
 enable_get_clicked_bar_data_event=NULL, event=NULL,
 fun_effects=NULL, fun_keys=NULL, fun_paths=NULL,
 fun_prepares=NULL, fun_values=NULL, funs=NULL,
-mapbox_token=NULL, maps=NULL, n_clicks=NULL,
-n_clicks_timestamp=NULL, opt_merge=NULL, option=NULL,
-part_of_opt=NULL, reset_id=NULL, resize_id=NULL,
+getDataURL=NULL, mapbox_token=NULL, maps=NULL,
+n_clicks=NULL, n_clicks_timestamp=NULL, opt_merge=NULL,
+option=NULL, part_of_opt=NULL, renderToSVGString=NULL,
+renderer=NULL, reset_id=NULL, resize_id=NULL,
 selected_data=NULL, style=NULL, yAxisResize=NULL,
 yAxisRightClick=NULL, zoom_data=NULL)
 }
@@ -51,6 +52,8 @@ yAxisRightClick=NULL, zoom_data=NULL)
 
 \item{funs}{Named list. }
 
+\item{getDataURL}{Named list. }
+
 \item{mapbox_token}{Character. }
 
 \item{maps}{Named list. }
@@ -64,6 +67,10 @@ yAxisRightClick=NULL, zoom_data=NULL)
 \item{option}{Named list. }
 
 \item{part_of_opt}{Named list. }
+
+\item{renderToSVGString}{Named list. }
+
+\item{renderer}{Character. }
 
 \item{reset_id}{Numeric. }
 

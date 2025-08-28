@@ -1,13 +1,21 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
 import typing  # noqa: F401
-import numbers # noqa: F401
 from typing_extensions import TypedDict, NotRequired, Literal # noqa: F401
 from dash.development.base_component import Component, _explicitize_args
-try:
-    from dash.development.base_component import ComponentType # noqa: F401
-except ImportError:
-    ComponentType = typing.TypeVar("ComponentType", bound=Component)
+
+ComponentType = typing.Union[
+    str,
+    int,
+    float,
+    Component,
+    None,
+    typing.Sequence[typing.Union[str, int, float, Component, None]],
+]
+
+NumberType = typing.Union[
+    typing.SupportsFloat, typing.SupportsInt, typing.SupportsComplex
+]
 
 
 class DashECharts(Component):
@@ -49,6 +57,8 @@ Keyword arguments:
 
 - funs (dict; optional)
 
+- getDataURL (dict; optional)
+
 - mapbox_token (string; optional)
 
 - maps (dict; optional)
@@ -62,6 +72,10 @@ Keyword arguments:
 - option (dict; optional)
 
 - part_of_opt (dict; optional)
+
+- renderToSVGString (dict; optional)
+
+- renderer (string; default "canvas")
 
 - reset_id (number; default 0)
 
@@ -81,13 +95,13 @@ Keyword arguments:
     _namespace = 'dash_echarts'
     _type = 'DashECharts'
 
-    @_explicitize_args
+
     def __init__(
         self,
-        resize_id: typing.Optional[typing.Union[int, float, numbers.Number]] = None,
-        reset_id: typing.Optional[typing.Union[int, float, numbers.Number]] = None,
-        n_clicks: typing.Optional[typing.Union[int, float, numbers.Number]] = None,
-        n_clicks_timestamp: typing.Optional[typing.Union[int, float, numbers.Number]] = None,
+        resize_id: typing.Optional[NumberType] = None,
+        reset_id: typing.Optional[NumberType] = None,
+        n_clicks: typing.Optional[NumberType] = None,
+        n_clicks_timestamp: typing.Optional[NumberType] = None,
         click_data: typing.Optional[dict] = None,
         zoom_data: typing.Optional[dict] = None,
         selected_data: typing.Optional[dict] = None,
@@ -112,11 +126,14 @@ Keyword arguments:
         id: typing.Optional[typing.Union[str, dict]] = None,
         yAxisRightClick: typing.Optional[dict] = None,
         yAxisResize: typing.Optional[dict] = None,
+        renderer: typing.Optional[str] = None,
+        getDataURL: typing.Optional[dict] = None,
+        renderToSVGString: typing.Optional[dict] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
+        self._prop_names = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'getDataURL', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'renderToSVGString', 'renderer', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
+        self.available_properties = ['id', 'bmap_token', 'brushSelected_data', 'brush_data', 'click_data', 'clicked_bar_data', 'enable_get_clicked_bar_data_event', 'event', 'fun_effects', 'fun_keys', 'fun_paths', 'fun_prepares', 'fun_values', 'funs', 'getDataURL', 'mapbox_token', 'maps', 'n_clicks', 'n_clicks_timestamp', 'opt_merge', 'option', 'part_of_opt', 'renderToSVGString', 'renderer', 'reset_id', 'resize_id', 'selected_data', 'style', 'yAxisResize', 'yAxisRightClick', 'zoom_data']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()
@@ -124,3 +141,5 @@ Keyword arguments:
         args = {k: _locals[k] for k in _explicit_args}
 
         super(DashECharts, self).__init__(**args)
+
+setattr(DashECharts, "__init__", _explicitize_args(DashECharts.__init__))
