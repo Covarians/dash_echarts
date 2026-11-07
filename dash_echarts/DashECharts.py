@@ -6,6 +6,7 @@ from dash.development.base_component import Component, _explicitize_args
 class DashECharts(Component):
     """A DashECharts component.
 Dash component rendering an Apache ECharts chart.
+The chart code (ECharts and its extensions) is only loaded when a chart is displayed.
 
 Keyword arguments:
 
