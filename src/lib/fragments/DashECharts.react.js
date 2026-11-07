@@ -88,7 +88,7 @@ const firstAxisOfGrid = (axes, gridIndex) => (axes ?? []).find(axis => (axis.gri
  */
 const DashECharts = ({
     id, className, style, setProps,
-    option, option_merge,
+    option, option_merge, replace_merge,
     theme, renderer = 'canvas', loading = false,
     actions, y_axis_range,
     reset_count = 0,
@@ -114,6 +114,9 @@ const DashECharts = ({
     optionRef.current = resolvedOption;
     const mergeRef = useRef(resolvedMerge);
     mergeRef.current = resolvedMerge;
+    const replaceMergeRef = useRef(replace_merge);
+    replaceMergeRef.current = replace_merge;
+    const mergeSettings = () => (replaceMergeRef.current?.length ? { replaceMerge: replaceMergeRef.current } : undefined);
 
     const themeKey = theme !== null && typeof theme === 'object' ? JSON.stringify(theme) : theme;
     const eventsKey = JSON.stringify(events ?? []);
@@ -125,7 +128,7 @@ const DashECharts = ({
             instance.setOption(optionRef.current, true);
         }
         if (mergeRef.current) {
-            instance.setOption(mergeRef.current);
+            instance.setOption(mergeRef.current, mergeSettings());
         }
 
         const reportClick = (data) => {
@@ -136,7 +139,12 @@ const DashECharts = ({
 
         instance.on('click', params => {
             if (clickModeRef.current === 'series') {
-                reportClick(toSerializable(pick(CLICK_FIELDS, params)));
+                const data = pick(CLICK_FIELDS, params);
+                const componentId = instance.getOption()[params.componentType]?.[params.componentIndex]?.id;
+                if (componentId !== undefined) {
+                    data.componentId = componentId;
+                }
+                reportClick(toSerializable(data));
             }
         });
 
@@ -181,6 +189,7 @@ const DashECharts = ({
                 axis_right_click_data: {
                     axis: axisType,
                     index,
+                    id: current[axisType]?.[index]?.id,
                     name: current[axisType]?.[index]?.name,
                     seriesName: series?.name,
                     min,
@@ -208,7 +217,7 @@ const DashECharts = ({
 
     useEffect(() => {
         if (chart && resolvedMerge) {
-            chart.setOption(resolvedMerge);
+            chart.setOption(resolvedMerge, mergeSettings());
         }
     }, [resolvedMerge]);
 

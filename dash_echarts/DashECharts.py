@@ -25,14 +25,16 @@ Keyword arguments:
 
 - axis_right_click_data (dict; optional):
     Last right-click on an axis whose triggerEvent is True:  axis
-    (\"xAxis\" or \"yAxis\"), index, name, seriesName, displayed min
-    and max, timestamp.
+    (\"xAxis\" or \"yAxis\"), index, id, name, seriesName, displayed
+    min and max, timestamp.
 
 - className (string; optional):
     CSS class of the chart container.
 
 - click_data (dict; optional):
-    Last click (see click_mode), with a timestamp.
+    Last click (see click_mode), with a timestamp. In \"series\" mode
+    it includes  componentId, the id of the clicked component when it
+    has one.
 
 - click_mode (a value equal to: 'series', 'grid'; default 'series'):
     \"series\": clicks on chart elements are reported in click_data.
@@ -62,6 +64,12 @@ Keyword arguments:
 
 - renderer (a value equal to: 'canvas', 'svg'; default 'canvas'):
     Rendering engine. Changing it re-creates the chart.
+
+- replace_merge (list of strings; optional):
+    Component types (e.g. [\"series\", \"yAxis\"]) that option_merge
+    replaces instead of  merging, as ECharts' replaceMerge: their
+    components missing from option_merge are  removed, and those with
+    the same id keep their state (zoom, legend selection...).
 
 - reset_count (number; default 0):
     Increment to clear the chart and draw `option` again.
@@ -93,10 +101,10 @@ Keyword arguments:
     _namespace = 'dash_echarts'
     _type = 'DashECharts'
     @_explicitize_args
-    def __init__(self, id=Component.UNDEFINED, className=Component.UNDEFINED, style=Component.UNDEFINED, option=Component.UNDEFINED, option_merge=Component.UNDEFINED, theme=Component.UNDEFINED, renderer=Component.UNDEFINED, loading=Component.UNDEFINED, actions=Component.UNDEFINED, y_axis_range=Component.UNDEFINED, reset_count=Component.UNDEFINED, click_mode=Component.UNDEFINED, events=Component.UNDEFINED, n_clicks=Component.UNDEFINED, click_data=Component.UNDEFINED, zoom_data=Component.UNDEFINED, axis_right_click_data=Component.UNDEFINED, event_data=Component.UNDEFINED, **kwargs):
-        self._prop_names = ['id', 'actions', 'axis_right_click_data', 'className', 'click_data', 'click_mode', 'event_data', 'events', 'loading', 'n_clicks', 'option', 'option_merge', 'renderer', 'reset_count', 'style', 'theme', 'y_axis_range', 'zoom_data']
+    def __init__(self, id=Component.UNDEFINED, className=Component.UNDEFINED, style=Component.UNDEFINED, option=Component.UNDEFINED, option_merge=Component.UNDEFINED, replace_merge=Component.UNDEFINED, theme=Component.UNDEFINED, renderer=Component.UNDEFINED, loading=Component.UNDEFINED, actions=Component.UNDEFINED, y_axis_range=Component.UNDEFINED, reset_count=Component.UNDEFINED, click_mode=Component.UNDEFINED, events=Component.UNDEFINED, n_clicks=Component.UNDEFINED, click_data=Component.UNDEFINED, zoom_data=Component.UNDEFINED, axis_right_click_data=Component.UNDEFINED, event_data=Component.UNDEFINED, **kwargs):
+        self._prop_names = ['id', 'actions', 'axis_right_click_data', 'className', 'click_data', 'click_mode', 'event_data', 'events', 'loading', 'n_clicks', 'option', 'option_merge', 'renderer', 'replace_merge', 'reset_count', 'style', 'theme', 'y_axis_range', 'zoom_data']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'actions', 'axis_right_click_data', 'className', 'click_data', 'click_mode', 'event_data', 'events', 'loading', 'n_clicks', 'option', 'option_merge', 'renderer', 'reset_count', 'style', 'theme', 'y_axis_range', 'zoom_data']
+        self.available_properties = ['id', 'actions', 'axis_right_click_data', 'className', 'click_data', 'click_mode', 'event_data', 'events', 'loading', 'n_clicks', 'option', 'option_merge', 'renderer', 'replace_merge', 'reset_count', 'style', 'theme', 'y_axis_range', 'zoom_data']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

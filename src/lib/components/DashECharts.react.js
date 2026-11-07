@@ -60,6 +60,13 @@ DashECharts.propTypes = {
     option_merge: PropTypes.object,
 
     /**
+     * Component types (e.g. ["series", "yAxis"]) that option_merge replaces instead of
+     * merging, as ECharts' replaceMerge: their components missing from option_merge are
+     * removed, and those with the same id keep their state (zoom, legend selection...).
+     */
+    replace_merge: PropTypes.arrayOf(PropTypes.string),
+
+    /**
      * ECharts theme: the name of a registered theme (e.g. "dark") or a theme object.
      * Changing it re-creates the chart.
      */
@@ -114,7 +121,8 @@ DashECharts.propTypes = {
     n_clicks: PropTypes.number,
 
     /**
-     * Last click (see click_mode), with a timestamp.
+     * Last click (see click_mode), with a timestamp. In "series" mode it includes
+     * componentId, the id of the clicked component when it has one.
      */
     click_data: PropTypes.object,
 
@@ -125,7 +133,7 @@ DashECharts.propTypes = {
 
     /**
      * Last right-click on an axis whose triggerEvent is true:
-     * axis ("xAxis" or "yAxis"), index, name, seriesName, displayed min and max, timestamp.
+     * axis ("xAxis" or "yAxis"), index, id, name, seriesName, displayed min and max, timestamp.
      */
     axis_right_click_data: PropTypes.object,
 
