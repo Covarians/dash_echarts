@@ -9,6 +9,8 @@ Rewrite of the component with a new, consistent API (breaking changes).
   `{"function": "name", "args": value}`, defined in the app's assets in `window.dashEchartsFunctions`.
 - `theme`, `renderer` (`"canvas"` / `"svg"`), `loading`, `className`.
 - `actions`: ECharts actions dispatched from Python (zoom, highlight, legend, tooltip...).
+- `replace_merge`: ECharts replaceMerge with `option_merge`, so updated components keep their state.
+- `click_data.componentId` and `axis_right_click_data.id`: ids of the clicked components.
 - `events` + `event_data`: report any ECharts event.
 - `click_mode="grid"`: report any click inside a grid with its coordinates and category.
 - Right-click on x axes too (`axis_right_click_data.axis`).

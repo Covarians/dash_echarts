@@ -83,6 +83,7 @@ optionally `args`.
 | --- | --- |
 | `option` | ECharts option. Each change replaces the whole chart option. |
 | `option_merge` | Option merged into the current chart, to update only some parts. |
+| `replace_merge` | Component types (e.g. `["series", "yAxis"]`) that `option_merge` replaces instead of merging (ECharts `replaceMerge`): missing components are removed, those with the same `id` keep their state (zoom, legend selection...). |
 | `style`, `className`, `id` | Container style (give it a height), CSS class and Dash id. |
 | `theme` | Registered theme name (e.g. `"dark"`) or theme object. Re-creates the chart. |
 | `renderer` | `"canvas"` (default) or `"svg"`. Re-creates the chart. |
@@ -99,9 +100,9 @@ The chart follows the size of its container automatically.
 
 | Property | Content |
 | --- | --- |
-| `n_clicks`, `click_data` | Click count and last click. `"series"` mode: componentType, seriesName, name, dataIndex, value... `"grid"` mode: gridIndex, x, y, and xCategory for a category x axis. |
+| `n_clicks`, `click_data` | Click count and last click. `"series"` mode: componentType, componentId, seriesName, name, dataIndex, value... `"grid"` mode: gridIndex, x, y, and xCategory for a category x axis. |
 | `zoom_data` | Last dataZoom change: dataZoomId, start, end (in %), startValue, endValue. |
-| `axis_right_click_data` | Right-click on an axis with `triggerEvent: true`: axis, index, name, seriesName, displayed min and max. |
+| `axis_right_click_data` | Right-click on an axis with `triggerEvent: true`: axis, index, id, name, seriesName, displayed min and max. |
 | `event_data` | Last event listed in `events`: its parameters and `type`. |
 
 Each of them has a `timestamp`, so a callback fires even when the values repeat.
