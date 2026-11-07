@@ -1,22 +1,25 @@
 import dash_echarts
-from dash import Dash, callback, html, Input, Output
+from dash import Dash, Input, Output, callback, html
 
 app = Dash(__name__)
 
+option = {
+    "tooltip": {"trigger": "axis"},
+    "xAxis": {"type": "category", "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
+    "yAxis": {"type": "value"},
+    "series": [{"type": "line", "data": [150, 230, 224, 218, 135, 147, 260]}],
+}
+
 app.layout = html.Div([
-    dash_echarts.DashECharts(
-        id='input',
-        value='my-value',
-        label='my-label'
-    ),
-    html.Div(id='output')
+    dash_echarts.DashECharts(id="chart", option=option, style={"width": "100%", "height": "400px"}),
+    html.Pre(id="click-output"),
 ])
 
 
-@callback(Output('output', 'children'), Input('input', 'value'))
-def display_output(value):
-    return 'You have entered {}'.format(value)
+@callback(Output("click-output", "children"), Input("chart", "click_data"))
+def show_click(click_data):
+    return f"Clicked: {click_data}" if click_data else "Click a point on the line."
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
