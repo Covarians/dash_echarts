@@ -12,7 +12,8 @@
     "build": "npm run build:js && npm run build:backends"
   },
   "author": "Covarians <dirtech@covarians.eu>",
-  "license": "",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
     "echarts": "^5.6.0",
     "echarts-gl": "^2.0.9",

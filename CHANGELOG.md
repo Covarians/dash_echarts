@@ -19,6 +19,7 @@
 ### Added
 - `n_resizes` property (window resize timestamp) is declared.
 - Browser sandbox (`npm start`) and documentation in `doc/`.
+- Proprietary license, with the notice of the original dash-echarts code and the bundled libraries.
 
 ### Removed
 - R and Julia packages.

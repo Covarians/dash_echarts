@@ -1,0 +1,28 @@
+Copyright (c) Covarians. All rights reserved.
+
+This software and its documentation are proprietary and confidential.
+No part of it may be used, copied, modified, merged, published, distributed,
+sublicensed or sold without the prior written permission of Covarians.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL COVARIANS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+
+Third-party code
+----------------
+
+Parts of this software are derived from dash-echarts by dameng
+(https://github.com/mergeforward/dash-echarts), licensed under the
+Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+and published on PyPI under the MIT License. These parts remain subject
+to their original license; this copyright notice must be kept.
+
+The built JavaScript files bundle third-party libraries, each under its own
+license (see their package in node_modules):
+- Apache ECharts: Apache License 2.0
+- ZRender, echarts-gl: BSD 3-Clause License
+- echarts-stat: BSD License
+- ramda: MIT License
+- mapbox-gl: Mapbox Terms of Service (proprietary, not open source);
+  using it requires a Mapbox account and access token.

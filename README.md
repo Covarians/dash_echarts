@@ -13,9 +13,13 @@ The chart code is loaded only when a chart is displayed, so pages without a char
 
 ## Install
 
+The repository is private: you need read access to `Covarians/dash_echarts` on GitHub.
+
 ```
 pip install git+https://github.com/Covarians/dash_echarts.git@1.2.0
 ```
+
+For servers and automated installs, see [Build & deploy](doc/build-and-deploy.md#install-in-an-app).
 
 ## Use it in a Dash app
 
@@ -95,4 +99,5 @@ executed in the browser: only pass trusted code, never user input.
 
 ## License
 
-See [LICENSE](LICENSE).
+Proprietary, all rights reserved. See [LICENSE](LICENSE), which also lists the
+open-source code and libraries this package includes.

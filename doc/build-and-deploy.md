@@ -31,15 +31,31 @@ the package from git, without building it.
 
 ## Install in an app
 
+The repository is private, so `pip` must authenticate to GitHub.
+
+**Developer machine:** install with HTTPS. Git asks for your GitHub login the first
+time (on Windows, Git Credential Manager remembers it):
+
 ```
 pip install git+https://github.com/Covarians/dash_echarts.git@x.y.z
 ```
 
-or in the app's `requirements.txt`:
+**Server or automated install**, two options:
 
-```
-dash_echarts @ git+https://github.com/Covarians/dash_echarts.git@x.y.z
-```
+- **SSH deploy key** (recommended): create an SSH key on the server and add its
+  public key, read-only, in the repository *Settings > Deploy keys*. Then:
+
+  ```
+  dash_echarts @ git+ssh://git@github.com/Covarians/dash_echarts.git@x.y.z
+  ```
+
+- **Access token:** a fine-grained personal access token with read-only access to
+  this repository's *Contents*, stored in an environment variable (never in the
+  file). pip replaces `${GITHUB_TOKEN}` in requirements files:
+
+  ```
+  dash_echarts @ git+https://${GITHUB_TOKEN}@github.com/Covarians/dash_echarts.git@x.y.z
+  ```
 
 ## Dash version
 
