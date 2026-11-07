@@ -1,13 +1,17 @@
 import dash_echarts
 from dash import Dash, Input, Output, callback, html
 
+# Functions used by the chart are defined in assets/dash_echarts_functions.js.
 app = Dash(__name__)
 
 option = {
     "tooltip": {"trigger": "axis"},
     "xAxis": {"type": "category", "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
-    "yAxis": {"type": "value"},
-    "series": [{"type": "line", "data": [150, 230, 224, 218, 135, 147, 260]}],
+    "yAxis": {
+        "type": "value",
+        "axisLabel": {"formatter": {"function": "withUnit", "args": "kg"}},
+    },
+    "series": [{"name": "Weight", "type": "line", "data": [150, 230, 224, 218, 135, 147, 260]}],
 }
 
 app.layout = html.Div([

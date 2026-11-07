@@ -3,11 +3,11 @@
 **dash_echarts** is a [Dash](https://dash.plotly.com/) component that displays
 [Apache ECharts](https://echarts.apache.org/) charts in Python Dash applications.
 
-You describe the chart with a standard ECharts `option` dictionary in Python, and
-user interactions (clicks, zoom, brush selection, y-axis right-click…) come back to
-your Dash callbacks as component properties. ECharts extensions are included:
-`echarts-gl` (3D), `echarts-stat` (regression, histogram, clustering transforms) and
-`mapbox-gl`.
+You describe the chart with a standard ECharts `option` dictionary in Python.
+User interactions (clicks, zoom, axis right-click, any other ECharts event) come back
+to your Dash callbacks as component properties, and you can drive the chart with
+ECharts actions. JavaScript functions such as formatters live in your app's assets
+and are referenced by name from Python.
 
 The chart code is loaded only when a chart is displayed, so pages without a chart stay light.
 
@@ -16,7 +16,7 @@ The chart code is loaded only when a chart is displayed, so pages without a char
 The repository is private: you need read access to `Covarians/dash_echarts` on GitHub.
 
 ```
-pip install git+https://github.com/Covarians/dash_echarts.git@1.2.0
+pip install git+https://github.com/Covarians/dash_echarts.git@2.0.0
 ```
 
 For servers and automated installs, see [Build & deploy](doc/build-and-deploy.md#install-in-an-app).
@@ -32,12 +32,12 @@ app = Dash(__name__)
 option = {
     "tooltip": {"trigger": "axis"},
     "xAxis": {"type": "category", "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
-    "yAxis": {"type": "value"},
-    "series": [{"type": "line", "data": [150, 230, 224, 218, 135, 147, 260]}],
+    "yAxis": {"type": "value", "axisLabel": {"formatter": {"function": "withUnit", "args": "kg"}}},
+    "series": [{"name": "Weight", "type": "line", "data": [150, 230, 224, 218, 135, 147, 260]}],
 }
 
 app.layout = html.Div([
-    dash_echarts.DashECharts(id="chart", option=option, style={"width": "100%", "height": "400px"}),
+    dash_echarts.DashECharts(id="chart", option=option, style={"height": "400px"}),
     html.Pre(id="click-output"),
 ])
 
@@ -51,6 +51,30 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
+with, in `assets/dash_echarts_functions.js`:
+
+```js
+window.dashEchartsFunctions = Object.assign(window.dashEchartsFunctions || {}, {
+    withUnit: (unit) => (value) => `${value} ${unit}`,
+});
+```
+
+## JavaScript functions
+
+ECharts uses JavaScript functions for formatters, label callbacks, etc. They are not
+sent from Python:
+
+1. Define them in a JavaScript file of the app's `assets/` folder (Dash loads it
+   automatically), in `window.dashEchartsFunctions`.
+2. Reference them anywhere in `option` or `option_merge`:
+   - `{"function": "name"}` uses the function `name`;
+   - `{"function": "name", "args": value}` calls `name(value)` and uses the function it
+     returns. This builds parametrized functions from Python (units, labels,
+     thresholds...), and a callback can change `args` with a `Patch`.
+
+An object is treated as a reference only if its keys are exactly `function` and
+optionally `args`.
+
 ## Properties
 
 **Chart**
@@ -58,46 +82,37 @@ if __name__ == "__main__":
 | Property | Description |
 | --- | --- |
 | `option` | ECharts option. Each change replaces the whole chart option. |
-| `opt_merge` | Option merged into the current chart, to update only some parts. |
-| `style`, `id` | Style of the chart container (give it a height) and Dash id. |
-| `reset_id` | Increment to clear the chart and redraw `option`. |
-| `resize_id` | Increment to resize the chart to its container (after 500 ms). |
-| `yAxisResize` | `{index, min, max}`: sets a y-axis range and resets its dataZoom. |
-| `maps` | `{name: geoJSON or {svg: "<svg…>"}}` maps registered in ECharts. |
-| `mapbox_token` | Mapbox access token for `echarts-gl` mapbox charts. |
+| `option_merge` | Option merged into the current chart, to update only some parts. |
+| `style`, `className`, `id` | Container style (give it a height), CSS class and Dash id. |
+| `theme` | Registered theme name (e.g. `"dark"`) or theme object. Re-creates the chart. |
+| `renderer` | `"canvas"` (default) or `"svg"`. Re-creates the chart. |
+| `loading` | Shows the ECharts loading animation. |
+| `actions` | ECharts actions dispatched each time the list is set, e.g. `[{"type": "dataZoom", "start": 0, "end": 50}]`. |
+| `y_axis_range` | `{index, min, max}`: sets a y axis range and resets its dataZoom. |
+| `reset_count` | Increment to clear the chart and draw `option` again. |
+| `click_mode` | `"series"` (default): clicks on chart elements. `"grid"`: any click inside a grid, with its coordinates. |
+| `events` | Other ECharts events to report in `event_data`, e.g. `["legendselectchanged", "brushSelected"]`. |
 
-**JavaScript functions** (formatters, callbacks…), passed as code strings. The code is
-executed in the browser: only pass trusted code, never user input.
+The chart follows the size of its container automatically.
 
-| Property | Description |
+**Sent to Dash**
+
+| Property | Content |
 | --- | --- |
-| `funs` | `{name: "function (params) { … }"}`. Inside a function, `this` gives access to `chart`, `echarts`, `ramda`, `gl`, `ecStat`, `mapboxgl` and the other funs. |
-| `fun_keys` | Option keys whose string value is a function name, e.g. `["formatter"]`. |
-| `fun_values` | String values in the option to replace by the function of that name. |
-| `fun_paths` | `{name: ["tooltip", "formatter"]}`: puts a function at a path of the option. |
-| `fun_prepares` | Functions called with (a copy of) the option before it is displayed. |
-| `fun_effects` | Functions called once the chart exists, then when they, `funs` or the option change: `[name]` or `[{name, option}]`. |
+| `n_clicks`, `click_data` | Click count and last click. `"series"` mode: componentType, seriesName, name, dataIndex, value... `"grid"` mode: gridIndex, x, y, and xCategory for a category x axis. |
+| `zoom_data` | Last dataZoom change: dataZoomId, start, end (in %), startValue, endValue. |
+| `axis_right_click_data` | Right-click on an axis with `triggerEvent: true`: axis, index, name, seriesName, displayed min and max. |
+| `event_data` | Last event listed in `events`: its parameters and `type`. |
 
-**Events sent to Dash**
-
-| Property | Sent when |
-| --- | --- |
-| `click_data`, `n_clicks`, `n_clicks_timestamp`, `event` | A chart element is clicked (`event`: mouse position, button and modifier keys). |
-| `clicked_bar_data` | A bar chart category is clicked, when `enable_get_clicked_bar_data_event` is true (replaces `click_data`). |
-| `zoom_data` | The dataZoom changes: `{start, end}` in %. |
-| `selected_data` | The selection changes. |
-| `brush_data`, `brushSelected_data` | A brush selection ends / changes. |
-| `yAxisRightClick` | A y-axis is right-clicked: `{index, name, axisName, min, max, ts}`. |
-| `n_resizes` | The window is resized (timestamp). |
+Each of them has a `timestamp`, so a callback fires even when the values repeat.
 
 ## Documentation
 
 - [Architecture](doc/architecture.md) — how the component is built and loaded.
 - [Develop & test](doc/develop-and-test.md) — the browser sandbox and the Dash example.
 - [Build & deploy](doc/build-and-deploy.md) — build, version and install in apps.
-- [Changelog](CHANGELOG.md)
+- [Changelog](CHANGELOG.md), including the migration from 1.x to 2.0.
 
 ## License
 
-Proprietary, all rights reserved. See [LICENSE](LICENSE), which also lists the
-open-source code and libraries this package includes.
+Proprietary, all rights reserved. See [LICENSE](LICENSE).

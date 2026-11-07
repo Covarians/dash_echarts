@@ -12,17 +12,16 @@ LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
 Third-party code
 ----------------
 
-Parts of this software are derived from dash-echarts by dameng
-(https://github.com/mergeforward/dash-echarts), licensed under the
-Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
-and published on PyPI under the MIT License. These parts remain subject
-to their original license; this copyright notice must be kept.
+The project was generated with Plotly's dash-component-boilerplate (MIT License).
 
 The built JavaScript files bundle third-party libraries, each under its own
 license (see their package in node_modules):
 - Apache ECharts: Apache License 2.0
-- ZRender, echarts-gl: BSD 3-Clause License
-- echarts-stat: BSD License
-- ramda: MIT License
-- mapbox-gl: Mapbox Terms of Service (proprietary, not open source);
-  using it requires a Mapbox account and access token.
+- ZRender: BSD 3-Clause License
+- tslib: 0BSD License
+
+Versions up to 1.2.0 contained code derived from dash-echarts by dameng
+(https://github.com/mergeforward/dash-echarts), licensed under the Apache
+License 2.0 and published on PyPI under the MIT License; that code remains
+subject to its original license in the history of this repository.
+Version 2.0.0 is a rewrite that does not contain that code.

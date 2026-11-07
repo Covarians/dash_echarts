@@ -3,96 +3,142 @@ import PropTypes from 'prop-types';
 import { DashECharts as LazyDashECharts } from '../LazyLoader';
 
 /**
- * Dash component rendering an Apache ECharts chart.
- * The chart code (ECharts and its extensions) is only loaded when a chart is displayed.
+ * Apache ECharts chart for Dash.
+ * The chart code is only loaded when a chart is displayed.
+ *
+ * JavaScript functions (formatters, ...) are not sent from Python: define them in an
+ * app asset as `window.dashEchartsFunctions = {name: function}` and reference them in
+ * `option` or `option_merge` with `{"function": "name"}`. With
+ * `{"function": "name", "args": ...}`, the registered function is a factory called
+ * with `args` that returns the function to use.
  */
 const DashECharts = ({
-    enable_get_clicked_bar_data_event = false,
+    renderer = 'canvas',
+    loading = false,
+    reset_count = 0,
+    click_mode = 'series',
     n_clicks = 0,
-    resize_id = 0,
-    reset_id = 0,
     ...props
 }) => (
     // Same box as the chart while its code loads, to avoid a layout jump.
-    <Suspense fallback={<div id={props.id} style={props.style} />}>
+    <Suspense fallback={<div id={props.id} className={props.className} style={props.style} />}>
         <LazyDashECharts
-            enable_get_clicked_bar_data_event={enable_get_clicked_bar_data_event}
+            renderer={renderer}
+            loading={loading}
+            reset_count={reset_count}
+            click_mode={click_mode}
             n_clicks={n_clicks}
-            resize_id={resize_id}
-            reset_id={reset_id}
             {...props}
         />
     </Suspense>
 );
 
 DashECharts.propTypes = {
-    resize_id: PropTypes.number,
-    reset_id: PropTypes.number,
-    n_clicks: PropTypes.number,
-    n_clicks_timestamp: PropTypes.number,
-    /**
-     * Timestamp of the last window resize.
-     */
-    n_resizes: PropTypes.number,
-    click_data: PropTypes.object,
-    zoom_data: PropTypes.object,
-    selected_data: PropTypes.object,
-    brush_data: PropTypes.object,
-    brushSelected_data: PropTypes.object,
-    style: PropTypes.object,
-    /**
-     * Mouse event of the last click: type, button, offsetX/Y, clientX/Y and modifier keys.
-     */
-    event: PropTypes.object,
-    option: PropTypes.object,
-    opt_merge: PropTypes.object,
-    /**
-     * Deprecated: not used.
-     */
-    part_of_opt: PropTypes.object,
-    enable_get_clicked_bar_data_event: PropTypes.bool,
-    clicked_bar_data: PropTypes.object,
-    maps: PropTypes.object,
-    /**
-     * Functions as JavaScript code strings, by name. The code is executed in the browser:
-     * only pass trusted code, never user input.
-     */
-    funs: PropTypes.object,
-    fun_keys: PropTypes.array,
-    fun_values: PropTypes.array,
-    /**
-     * Function name to path in the option where the function is set: {name: ['key1', 'key2', ...]}.
-     */
-    fun_paths: PropTypes.object,
-    /**
-     * Functions called once the chart exists, then whenever they, the funs or the option change: [name] or [{name, option}].
-     */
-    fun_effects: PropTypes.array,
-    fun_prepares: PropTypes.array,
-    mapbox_token: PropTypes.string,
-    /**
-     * Not used: to use bmap, load the Baidu Maps API script (with its key) in the app.
-     */
-    bmap_token: PropTypes.string,
     /**
      * The ID used to identify this component in Dash callbacks.
      */
     id: PropTypes.string,
+
+    /**
+     * CSS class of the chart container.
+     */
+    className: PropTypes.string,
+
+    /**
+     * Style of the chart container. It needs a height, e.g. {"height": "400px"}.
+     */
+    style: PropTypes.object,
+
+    /**
+     * ECharts option. Each change replaces the whole chart option.
+     */
+    option: PropTypes.object,
+
+    /**
+     * Option merged into the current chart option, to update only some parts.
+     */
+    option_merge: PropTypes.object,
+
+    /**
+     * ECharts theme: the name of a registered theme (e.g. "dark") or a theme object.
+     * Changing it re-creates the chart.
+     */
+    theme: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+    /**
+     * Rendering engine. Changing it re-creates the chart.
+     */
+    renderer: PropTypes.oneOf(['canvas', 'svg']),
+
+    /**
+     * Shows the ECharts loading animation.
+     */
+    loading: PropTypes.bool,
+
+    /**
+     * ECharts actions dispatched each time this list is set,
+     * e.g. [{"type": "dataZoom", "start": 0, "end": 50}].
+     */
+    actions: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * Sets the range of a y axis and resets the dataZoom attached to it.
+     */
+    y_axis_range: PropTypes.shape({
+        index: PropTypes.number,
+        min: PropTypes.number,
+        max: PropTypes.number,
+    }),
+
+    /**
+     * Increment to clear the chart and draw `option` again.
+     */
+    reset_count: PropTypes.number,
+
+    /**
+     * "series": clicks on chart elements are reported in click_data.
+     * "grid": any click inside a grid is reported with its coordinates
+     * (x, y, and xCategory for a category x axis).
+     */
+    click_mode: PropTypes.oneOf(['series', 'grid']),
+
+    /**
+     * Names of other ECharts events to report in event_data,
+     * e.g. ["legendselectchanged", "brushSelected"].
+     */
+    events: PropTypes.arrayOf(PropTypes.string),
+
+    /**
+     * Number of clicks reported in click_data.
+     */
+    n_clicks: PropTypes.number,
+
+    /**
+     * Last click (see click_mode), with a timestamp.
+     */
+    click_data: PropTypes.object,
+
+    /**
+     * Last dataZoom change: dataZoomId, start, end (in %), startValue, endValue, timestamp.
+     */
+    zoom_data: PropTypes.object,
+
+    /**
+     * Last right-click on an axis whose triggerEvent is true:
+     * axis ("xAxis" or "yAxis"), index, name, seriesName, displayed min and max, timestamp.
+     */
+    axis_right_click_data: PropTypes.object,
+
+    /**
+     * Last event listed in `events`: its ECharts parameters, type and timestamp.
+     */
+    event_data: PropTypes.object,
+
     /**
      * Dash-assigned callback that should be called to report property changes
      * to Dash, to make them available for callbacks.
      */
     setProps: PropTypes.func,
-
-    /**
-     * Send yAxisIndex, min and max after yAxis right click event
-     */
-    yAxisRightClick: PropTypes.object,
-
-    /**
-     * Receive yAxisIndex, min and max to resize yAxis
-     */
-    yAxisResize: PropTypes.object,
 };
 
 export default DashECharts;
